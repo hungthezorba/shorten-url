@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    expose:
+      - 6379
+  
+  backend:
+    build: ./backend
+    image: shorten-url-backend
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+      - REDIS_USERNAME=
+      - REDIS_PASSWORD=
+      - REDIS_DB=
+    depends_on:
+      - redis
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
+  
+  frontend:
+    build: ./frontend
+    image: shorten-url-frontend
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    depends_on:
+      - redis
+    ports:
+      - 5173:5173
