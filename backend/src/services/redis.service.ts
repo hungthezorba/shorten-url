@@ -1,8 +1,16 @@
+import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
+@Injectable()
+export class RedisService {
+  private readonly redis: Redis = new Redis({
+    port: Number(process.env.REDIS_PORT),
+    host: process.env.REDIS_HOST,
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+    db: Number(process.env.REDIS_DB),
+  });
 
-const redis = new Redis({
-  port: 6379, // Redis port
-  host: '127.0.0.1', // Redis host
-});
-
-export default redis;
+  getClient() {
+    return this.redis;
+  }
+}

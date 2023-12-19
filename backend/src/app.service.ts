@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import redis from './services/redis.service';
 import * as createHash from 'create-hash';
+import { RedisService } from './services/redis.service';
+import { Redis } from 'ioredis';
 
 export type CreateUrlDto = {
   url: string;
@@ -12,10 +13,13 @@ export type GetUrlDto = {
 
 @Injectable()
 export class AppService {
+  constructor(private readonly redisService: RedisService) {}
+
+  private readonly redisClient: Redis = this.redisService.getClient();
+
   async getUrl(params: GetUrlDto): Promise<string> {
     const { key } = params;
-    console.log(key);
-    const url = await redis.get(key);
+    const url = await this.redisClient.get(key);
     return url;
   }
 
@@ -25,7 +29,7 @@ export class AppService {
       .update(url, 'utf8')
       .digest('hex')
       .slice(0, 6);
-    redis.set(hash, url);
+    this.redisClient.set(hash, url);
     return hash;
   }
 }
