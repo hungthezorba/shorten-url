@@ -1,12 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { AppService, CreateUrlDto } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get(':id')
+  async getUrl(@Param() params: { id: string }): Promise<{ url: string }> {
+    return {
+      url: await this.appService.getUrl({ key: params.id }),
+    };
+  }
+
+  @Post()
+  createUrl(@Body() createUrlDto: CreateUrlDto): { hash: string } {
+    return {
+      hash: this.appService.createUrl(createUrlDto),
+    };
   }
 }
