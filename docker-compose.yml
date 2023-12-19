@@ -27,6 +27,8 @@ services:
   frontend:
     build: ./frontend
     image: shorten-url-frontend
+    volumes:
+      - ./frontend/src:/app/src
     environment:
       - VITE_API_URL=http://localhost:5000
     depends_on:

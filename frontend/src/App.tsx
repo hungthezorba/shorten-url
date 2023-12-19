@@ -2,9 +2,9 @@ import React, { useMemo, useState } from "react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { createShortenUrl } from "./apis/create-url";
-import { ClipboardCopyIcon } from "@radix-ui/react-icons";
+import { ClipboardIcon } from "@radix-ui/react-icons";
 import { useToast } from "./components/ui/use-toast";
-import { DefaultLayout } from "./layouts/default";
+import { DefaultLayout } from "./layouts/default-layout";
 import { Loader2 } from "lucide-react";
 
 function App() {
@@ -43,8 +43,8 @@ function App() {
 
   return (
     <DefaultLayout>
-      <div className="flex justify-center mx-auto flex-col gap-4">
-        <div className="flex max-w-sm items-center space-x-2">
+      <div className="flex justify-center mx-auto flex-col gap-4 w-full h-screen items-center">
+        <div className="flex max-w-sm items-center justify-center space-x-2 w-full">
           <Input
             onChange={handleChange}
             value={url}
@@ -59,10 +59,10 @@ function App() {
           <div className="flex flex-col gap-2">
             <div
               onClick={handleCopy}
-              className="drop-shadow-lg bg-secondary py-2 flex px-3 rounded-sm justify-between items-center cursor-pointer"
+              className="hover:shadow-md drop-shadow-lg bg-secondary py-2 flex gap-2 px-4 rounded-sm justify-between items-center cursor-pointer"
             >
               <p>{computedUrl}</p>
-              <ClipboardCopyIcon />
+              <ClipboardIcon />
             </div>
           </div>
         )}
